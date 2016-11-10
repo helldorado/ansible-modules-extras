@@ -145,7 +145,7 @@ options:
     description:
       - allow to force stop VM
       - can be used only with states C(stopped), C(restarted)
-    default: "no"
+    default:
     choices: [ "yes", "no" ]
     required: false
     type: boolean
@@ -790,7 +790,7 @@ def main():
       delete = dict(type='str'),
       description = dict(type='str'),
       digest = dict(type='str'),
-      force = dict(type='bool', default='no'),
+      force = dict(type='bool', default=None),
       freeze = dict(type='bool'),
       hostpci = dict(type='dict'),
       hotplug = dict(type='str'),
