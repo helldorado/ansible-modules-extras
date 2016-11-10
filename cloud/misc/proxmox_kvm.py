@@ -158,52 +158,52 @@ options:
     type: boolean
   hostpci:
     description:
-      - a hash/dictionaries of map host pci devices into guest. C(hostpci='{"key":"value", "key":"value"}')
-      - keys allowed are - C(hostpci[n]) where 0 ≤ n ≤ N
-      - values allowed are -  C("host="HOSTPCIID[;HOSTPCIID2...]",pcie="1|0",rombar="1|0",x-vga="1|0"")
-      - the C(host) parameter is Host PCI device pass through. HOSTPCIID syntax is C(bus:dev.func) (hexadecimal numbers)
+      - Specify a hash/dictionary of map host pci devices into guest. C(hostpci='{"key":"value", "key":"value"}').
+      - Keys allowed are - C(hostpci[n]) where 0 ≤ n ≤ N.
+      - Values allowed are -  C("host="HOSTPCIID[;HOSTPCIID2...]",pcie="1|0",rombar="1|0",x-vga="1|0"").
+      - The C(host) parameter is Host PCI device pass through. HOSTPCIID syntax is C(bus:dev.func) (hexadecimal numbers).
       - C(pcie=boolean) I(default=0) Choose the PCI-express bus (needs the q35 machine model).
       - C(rombar=boolean) I(default=1) Specify whether or not the device’s ROM will be visible in the guest’s memory map.
       - C(x-vga=boolean) I(default=0) Enable vfio-vga device support.
-      - /!\ This option allows direct access to host hardware. So it is no longer possible to migrate such machines - use with special care
+      - /!\ This option allows direct access to host hardware. So it is no longer possible to migrate such machines - use with special care.
     required: false
     default: null
     type: A hash/dictionary defining host pci devices
   hotplug:
     description:
-      - selectively enable hotplug features
-      - this is a comma separated list of hotplug features C('network', 'disk', 'cpu', 'memory' and 'usb')
-      - value 0 to disable hotplug completely and value 1 is an alias for the default C('network,disk,usb')
+      - Selectively enable hotplug features.
+      - This is a comma separated list of hotplug features C('network', 'disk', 'cpu', 'memory' and 'usb').
+      - Value 0 disables hotplug completely and value 1 is an alias for the default C('network,disk,usb').
     required: false
     default: null
     type: string
   hugepages:
     description:
-      - enable/disable hugepages memmory
+      - Enable/disable hugepages memory.
     choices: ['any', '2', '1024']
     required: false
     default: null
     type: string
   ide:
     description:
-      - a hash/dictionaries of volume used as IDE hard disk or CD-ROM. C(ide='{"key":"value", "key":"value"}')
-      - keys allowed are - C(ide[n]) where 0 ≤ n ≤ 3
-      - values allowed are - C("storage:size,format=value")
-      - C(storage) is the storage identifier where to create the disk
+      - A hash/dictionary of volume used as IDE hard disk or CD-ROM. C(ide='{"key":"value", "key":"value"}').
+      - Keys allowed are - C(ide[n]) where 0 ≤ n ≤ 3.
+      - Values allowed are - C("storage:size,format=value").
+      - C(storage) is the storage identifier where to create the disk.
       - C(size) is the size of the disk in GB.
-      - C(format) is the drive’s backing file’s data format. C(qcow2|raw|subvol)
+      - C(format) is the drive’s backing file’s data format. C(qcow2|raw|subvol).
     required: false
     default: null
     type: A hash/dictionary defining ide
   keyboard:
     description:
-      - sets the keyboard layout for vnc server
+      - Sets the keyboard layout for VNC server.
     required: false
     default: null
     type: string
   kvm:
     description:
-      - enable/disable KVM hardware virtualization
+      - Enable/disable KVM hardware virtualization.
     required: false
     default: "yes"
     choices: [ "yes", "no" ]
@@ -257,12 +257,12 @@ options:
     required: false
   net:
     description:
-      - a hash/dictionaries of network interfaces for the VM. C(net='{"key":"value", "key":"value"}')
-      - keys allowed are - C(net[n]) where 0 ≤ n ≤ N
-      - values allowed are - C("model="XX:XX:XX:XX:XX:XX",brigde="value",rate="value",tag="value",firewall="1|0",trunks="vlanid"")
-      - model is one of C(e1000 e1000-82540em e1000-82544gc e1000-82545em i82551 i82557b i82559er ne2k_isa ne2k_pci pcnet rtl8139 virtio vmxnet3)
+      - A hash/dictionary of network interfaces for the VM. C(net='{"key":"value", "key":"value"}').
+      - Keys allowed are - C(net[n]) where 0 ≤ n ≤ N.
+      - Values allowed are - C("model="XX:XX:XX:XX:XX:XX",brigde="value",rate="value",tag="value",firewall="1|0",trunks="vlanid"").
+      - Model is one of C(e1000 e1000-82540em e1000-82544gc e1000-82545em i82551 i82557b i82559er ne2k_isa ne2k_pci pcnet rtl8139 virtio vmxnet3).
       - C(XX:XX:XX:XX:XX:XX) should be an unique MAC address. This is automatically generated if not specified.
-      - the C(bridge) parameter can be used to automatically add the interface to a bridge device. The Proxmox VE standard bridge is called 'vmbr0'.
+      - The C(bridge) parameter can be used to automatically add the interface to a bridge device. The Proxmox VE standard bridge is called 'vmbr0'.
       - Option C(rate) is used to limit traffic bandwidth from and to this interface. It is specified as floating point number, unit is 'Megabytes per second'.
       - If you specify no bridge, we create a kvm 'user' (NATed) network device, which provides DHCP and DNS services.
     default: null
@@ -270,219 +270,219 @@ options:
     type: A hash/dictionary defining interfaces
   node:
     description:
-      - Proxmox VE node, when new VM will be created
-      - required only for C(state=present)
-      - for another states will be autodiscovered
+      - Proxmox VE node, where the new VM will be created.
+      - Only required for C(state=present).
+      - For other states, it will be autodiscovered.
     default: null
     required: false
   numa:
     description:
-      - a hash/dictionaries of NUMA topology. C(numa='{"key":"value", "key":"value"}')
-      - keys allowed are - C(numa[n]) where 0 ≤ n ≤ N
-      - values allowed are - C("cpu="<id[-id];...>",hostnodes="<id[-id];...>",memory="number",policy="(bind|interleave|preferred)"")
-      - C(cpus) CPUs accessing this NUMA node
-      - C(hostnodes) Host NUMA nodes to use
-      - C(memory) Amount of memory this NUMA node provides
-      - C(policy) NUMA allocation policy
+      - A hash/dictionaries of NUMA topology. C(numa='{"key":"value", "key":"value"}').
+      - Keys allowed are - C(numa[n]) where 0 ≤ n ≤ N.
+      - Values allowed are - C("cpu="<id[-id];...>",hostnodes="<id[-id];...>",memory="number",policy="(bind|interleave|preferred)"").
+      - C(cpus) CPUs accessing this NUMA node.
+      - C(hostnodes) Host NUMA nodes to use.
+      - C(memory) Amount of memory this NUMA node provides.
+      - C(policy) NUMA allocation policy.
     default: null
     required: false
     type: A hash/dictionary defining NUMA topology
   onboot:
     description:
-      - specifies whether a VM will be started during system bootup
+      - Specifies whether a VM will be started during system bootup.
     default: "yes"
     choices: [ "yes", "no" ]
     required: false
     type: boolean
   ostype:
     description:
-      - specifies guest operating system. This is used to enable special optimization/features for specific operating systems.
-      - l26 is Linux 2.6/3.X Kernel
+      - Specifies guest operating system. This is used to enable special optimization/features for specific operating systems.
+      - Notes: l26 is Linux 2.6/3.X Kernel.
     choices: ['other', 'wxp', 'w2k', 'w2k3', 'w2k8', 'wvista', 'win7', 'win8', 'l24', 'l26', 'solaris']
     default: l26
     required: false
     type: string
   parallel:
     description:
-      - a hash/dictionaries of map host parallel devices. C(parallel='{"key":"value", "key":"value"}')
-      - keys allowed are - (parallel[n]) where 0 ≤ n ≤ 2
-      - values allowed are - C("/dev/parport\d+|/dev/usb/lp\d+")
+      - A hash/dictionary of map host parallel devices. C(parallel='{"key":"value", "key":"value"}').
+      - Keys allowed are - (parallel[n]) where 0 ≤ n ≤ 2.
+      - Values allowed are - C("/dev/parport\d+|/dev/usb/lp\d+").
     default: null
     required: false
     type: A hash/dictionary defining host parallel devices
   protection:
     description:
-      - enable/disable the protection flag of the VM. This will enable/disable the remove VM and remove disk operations
+      - Enable/disable the protection flag of the VM. This will enable/disable the remove VM and remove disk operations.
     default: null
     choices: [ "yes", "no" ]
     required: false
     type: boolean
   reboot:
     description:
-      - allow reboot. If set to yes, the VM exit on reboot
+      - Allow reboot. If set to yes, the VM exit on reboot.
     default: null
     choices: [ "yes", "no" ]
     required: false
     type: boolean
   revert:
     description:
-      - revert a pending change
+      - Revert a pending change.
     default: null
     required: false
     type: string
   sata:
     description:
-      - a hash/dictionaries of volume used as sata hard disk or CD-ROM. C(sata='{"key":"value", "key":"value"}')
-      - keys allowed are - C(sata[n]) where 0 ≤ n ≤ 5
-      - values allowed are -  C("storage:size,format=value")
-      - C(storage) is the storage identifier where to create the disk
+      - A hash/dictionary of volume used as sata hard disk or CD-ROM. C(sata='{"key":"value", "key":"value"}').
+      - Keys allowed are - C(sata[n]) where 0 ≤ n ≤ 5.
+      - Values allowed are -  C("storage:size,format=value").
+      - C(storage) is the storage identifier where to create the disk.
       - C(size) is the size of the disk in GB.
-      - C(format) is the drive’s backing file’s data format. C(qcow2|raw|subvol)
+      - C(format) is the drive’s backing file’s data format. C(qcow2|raw|subvol).
     default: null
     required: false
     type: A hash/dictionary defining sata
   scsi:
     description:
-      - a hash/dictionaries of volume used as SCSI hard disk or CD-ROM. C(scsi='{"key":"value", "key":"value"}')
-      - keys allowed are - C(sata[n]) where 0 ≤ n ≤ 13
-      - values allowed are -  C("storage:size,format=value")
-      - C(storage) is the storage identifier where to create the disk
+      - A hash/dictionary of volume used as SCSI hard disk or CD-ROM. C(scsi='{"key":"value", "key":"value"}').
+      - Keys allowed are - C(sata[n]) where 0 ≤ n ≤ 13.
+      - Values allowed are -  C("storage:size,format=value").
+      - C(storage) is the storage identifier where to create the disk.
       - C(size) is the size of the disk in GB.
-      - C(format) is the drive’s backing file’s data format. qcow2|raw|subvol
+      - C(format) is the drive’s backing file’s data format. qcow2|raw|subvol.
     default: null
     required: false
     type:  A hash/dictionary defining scsi
   scsihw:
     description:
-      - sets SCSI controller model
+      - Specifies the SCSI controller model.
     choices: ['lsi', 'lsi53c810', 'virtio-scsi-pci', 'virtio-scsi-single', 'megasas', 'pvscsi']
     required: false
     default: null
     type: string
   serial:
     description:
-      - a hash/dictionaries of serial device to create inside the VM. '{"key":"value", "key":"value"}'
-      - keys allowed are - serial[n](str; required) where 0 ≤ n ≤ 3
-      - values allowed are -  C("(/dev/.+|socket)")
-      - /!\ If you pass through a host serial device, it is no longer possible to migrate such machines - use with special care
+      - A hash/dictionary of serial device to create inside the VM. '{"key":"value", "key":"value"}'.
+      - Keys allowed are - serial[n](str; required) where 0 ≤ n ≤ 3.
+      - Values allowed are -  C("(/dev/.+|socket)").
+      - /!\ If you pass through a host serial device, it is no longer possible to migrate such machines - use with special care.
     default: null
     required: false
     type: A hash/dictionary defining serial
   shares:
     description:
-      - sets amount of memory shares for auto-ballooning. (0 - 50000)
-      - the larger the number is, the more memory this VM gets
-      - number is relative to weights of all other running VMs
-      - using 0 disables auto-ballooning. value 0 is no limit
+      - Rets amount of memory shares for auto-ballooning. (0 - 50000).
+      - The larger the number is, the more memory this VM gets.
+      - The number is relative to weights of all other running VMs.
+      - Using 0 disables auto-ballooning, this means no limit.
     required: false
     default: null
     type: integer
   skiplock:
     description:
-      - ignore locks - only root is allowed to use this option
+      - Ignore locks - only root is allowed to use this option.
     required: false
     default: null
     choices: [ "yes", "no" ]
     type: boolean
   smbios:
     description:
-      - specifies SMBIOS type 1 fields
+      - Specifies SMBIOS type 1 fields.
     required: false
     default: null
     type: string
   sockets:
     description:
-      - sets the number of CPU sockets. (1 - N)
+      - Sets the number of CPU sockets. (1 - N).
     required: false
     default: 1
     type: integer
   startdate:
     description:
-      - sets the initial date of the real time clock.
-      - Valid format for date are 'now' or '2016-09-25T16:01:21' or '2016-09-25'
+      - Sets the initial date of the real time clock.
+      - Valid format for date are 'now' or '2016-09-25T16:01:21' or '2016-09-25'.
     required: false
     default: null
     type: string
   startup:
     description:
-      - startup and shutdown behavior. C([[order=]\d+] [,up=\d+] [,down=\d+])
-      - Order is a non-negative number defining the general startup order
-      - Shutdown in done with reverse ordering
+      - Startup and shutdown behavior. C([[order=]\d+] [,up=\d+] [,down=\d+]).
+      - Order is a non-negative number defining the general startup order.
+      - Shutdown in done with reverse ordering.
     required: false
     default: null
     type: string
   state:
     description:
-     - Indicate desired state of the instance
+     - Indicates desired state of the instance.
     choices: ['present', 'started', 'absent', 'stopped', 'restarted']
     required: false
     default: present
   tablet:
     description:
-      - Enable/disable the USB tablet device.
+      - Enables/disables the USB tablet device.
     required: false
     choices: [ "yes", "no" ]
     default: "no"
     type: boolean
   tdf:
     description:
-      - Enable/disable time drift fix.
+      - Enables/disables time drift fix.
     required: false
     default: null
     choices: [ "yes", "no" ]
     type: boolean
   template:
     description:
-      - enable/disable Template
+      - Enables/disables the template.
     required: false
     default: "no"
     choices: [ "yes", "no" ]
     type: boolean
   timeout:
     description:
-      - timeout for operations
+      - Timeout for operations.
     default: 30
     required: false
     type: integer
   validate_certs:
     description:
-      - enable/disable https certificate verification
+      - Enables/disables HTTPS certificate verification for API access.
     default: "no"
     choices: [ "yes", "no" ]
     required: false
     type: boolean
   vcpus:
     description:
-      - sets number of hotplugged vcpus
+      - Sets number of hotplugged vcpus.
     required: false
     default: null
     type: integer
   vga:
     description:
-     - select VGA type. If you want to use high resolution modes (>= 1280x1024x16) then you should use option 'std' or 'vmware'
+     - Select VGA type. If you want to use high resolution modes (>= 1280x1024x16) then you should use option 'std' or 'vmware'.
     choices: ['std', 'cirrus', 'vmware', 'qxl', 'serial0', 'serial1', 'serial2', 'serial3', 'qxl2', 'qxl3', 'qxl4']
     required: false
     default: std
   virtio:
     description:
-      - a hash/dictionaries of volume used as VIRTIO hard disk. C(virtio='{"key":"value", "key":"value"}')
-      - keys allowed are - C(virto[n]) where 0 ≤ n ≤ 15
-      - values allowed are -  C("storage:size,format=value")
-      - C(storage) is the storage identifier where to create the disk
+      - A hash/dictionary of volume used as VIRTIO hard disk. C(virtio='{"key":"value", "key":"value"}').
+      - Keys allowed are - C(virto[n]) where 0 ≤ n ≤ 15.
+      - Values allowed are -  C("storage:size,format=value").
+      - C(storage) is the storage identifier where to create the disk.
       - C(size) is the size of the disk in GB.
-      - C(format) is the drive’s backing file’s data format. C(qcow2|raw|subvol)
+      - C(format) is the drive’s backing file’s data format. C(qcow2|raw|subvol).
     required: false
     default: null
     type: A hash/dictionary defining virtio
   vmid:
     description:
-      - the instance id. Instead use I(name) parameter
-      - If vmid not set, will get the next VM id from ProxmoxAPI
+      - Specifies the VM ID. Instead use I(name) parameter.
+      - If vmid is not set, the next available VM ID will be fetched from ProxmoxAPI.
     default: null
     required: false
   watchdog:
     description:
-      - create a virtual hardware watchdog device
+      - Creates a virtual hardware watchdog device.
     required: false
     default: null
     type: string
