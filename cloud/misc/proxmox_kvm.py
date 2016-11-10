@@ -873,11 +873,11 @@ def main():
   # If vmid not set get the Next VM id from ProxmoxAPI
   # If vm name is set get the VM id from ProxmoxAPI
   if module.params['vmid'] is not None:
-   vmid = module.params['vmid']
+    vmid = module.params['vmid']
   elif state == 'present':
-   vmid = get_nextvmid(proxmox)
+    vmid = get_nextvmid(proxmox)
   elif module.params['name'] is not None:
-   vmid = get_vmid(proxmox, name)[0]
+    vmid = get_vmid(proxmox, name)[0]
 
   if state == 'present':
     try:
