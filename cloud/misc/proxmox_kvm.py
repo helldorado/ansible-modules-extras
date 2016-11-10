@@ -858,7 +858,7 @@ def main():
   if not api_password:
     try:
       api_password = os.environ['PROXMOX_PASSWORD']
-    except KeyError, e:
+    except KeyError as e:
       module.fail_json(msg='You should set api_password param or use PROXMOX_PASSWORD environment variable')
 
   try:
