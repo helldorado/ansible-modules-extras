@@ -43,7 +43,7 @@ options:
   args:
     description:
       - Pass arbitrary arguments to kvm.
-      - Notes -  This option is for experts only!
+      - Notes, This option is for experts only!
     default: "-serial unix:/var/run/qemu-server/VMID.serial,server,nowait"
     required: false
     type: string
@@ -85,7 +85,7 @@ options:
   boot:
     description:
       - Specify the boot order: boot on floppy (a), hard disk (c), CD-ROM (d), or network (n)
-      - Notes -  You can combine to set order.
+      - Notes, You can combine to set order.
     required: false
     default: cnd
     type: string
@@ -117,7 +117,7 @@ options:
   cpuunits:
     description:
       - Specify CPU weight for a VM.
-      - Notes -  You can disable fair-scheduler configuration by setting this to 0
+      - Notes, You can disable fair-scheduler configuration by setting this to 0
     default: 1000
     required: false
     type: integer
@@ -130,21 +130,21 @@ options:
   description:
     description:
       - Specify the description for the VM. Only used on the configuration web interface.
-      - Notes -  this is saved as comment inside the configuration file.
+      - Notes, this is saved as comment inside the configuration file.
     required: false
     default: null
     type: string
   digest:
     description:
       - Specify if to prevent changes if current configuration file has different SHA1 digest.
-      - Notes -  this can be used to prevent concurrent modifications.
+      - Notes, this can be used to prevent concurrent modifications.
     required: false
     default: null
     type: string
   force:
     description:
       - Allow to force stop VM.
-      - Notes -  can be used only with states C(stopped), C(restarted).
+      - Notes, can be used only with states C(stopped), C(restarted).
     default: null
     choices: [ "yes", "no" ]
     required: false
@@ -211,7 +211,7 @@ options:
   localtime:
     description:
       - Sets the real time clock to local time.
-      - Notes -  This is enabled by default if ostype indicates a Microsoft OS.
+      - Notes, This is enabled by default if ostype indicates a Microsoft OS.
     required: false
     default: null
     choices: [ "yes", "no" ]
@@ -245,14 +245,14 @@ options:
   migrate_speed:
     description:
       - Sets maximum speed (in MB/s) for migrations.
-      - Notes -  a value of 0 is no limit.
+      - Notes, a value of 0 is no limit.
     required: false
     default: null
     type: integer
   name:
     description:
       - Specifies the VM name. Only used on the configuration web interface.
-      - Notes -  required only for C(state=present).
+      - Notes, required only for C(state=present).
     default: null
     required: false
   net:
@@ -297,7 +297,7 @@ options:
   ostype:
     description:
       - Specifies guest operating system. This is used to enable special optimization/features for specific operating systems.
-      - Notes -  l26 is Linux 2.6/3.X Kernel.
+      - Notes, l26 is Linux 2.6/3.X Kernel.
     choices: ['other', 'wxp', 'w2k', 'w2k3', 'w2k8', 'wvista', 'win7', 'win8', 'l24', 'l26', 'solaris']
     default: l26
     required: false
@@ -486,7 +486,7 @@ options:
     required: false
     default: null
     type: string
-Notes - 
+Notes,
   - Requires proxmoxer and requests modules on host. This modules can be installed with pip.
 requirements: [ "proxmoxer", "requests" ]
 '''
