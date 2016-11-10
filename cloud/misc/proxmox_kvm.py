@@ -334,7 +334,8 @@ options:
   state:
     description:
       - Indicates desired state of the instance.
-    choices: ['present', 'started', 'absent', 'stopped', 'restarted']
+      - If C(current), the current state of the VM will be fecthed. You can acces it with C(results.status)
+    choices: ['present', 'started', 'absent', 'stopped', 'restarted','current']
     required: false
     default: present
   tablet:
@@ -514,6 +515,15 @@ EXAMPLES = '''
     name        : spynal
     node        : sabrewulf
     state       : absent
+
+# Get VM current state 
+- proxmox_kvm:
+    api_user    : root@pam
+    api_password: secret
+    api_host    : helldorado
+    name        : spynal
+    node        : sabrewulf
+    state       : current
 '''
 
 RETURN = '''
@@ -543,6 +553,15 @@ vmid:
     returned: success
     type: int
     sample: 115
+status:
+    description: The current virtual machine status.
+    returned: success
+    type: dict
+    sample: '{
+      "changed": false,
+      "msg": "VM kropta with vmid = 110 is running",
+      "status": "running" 
+    }'
 '''
 
 import os
@@ -744,7 +763,7 @@ def main():
       sockets = dict(type='int', default=1),
       startdate = dict(type='str'),
       startup = dict(),
-      state = dict(default='present', choices=['present', 'absent', 'stopped', 'started', 'restarted']),
+      state = dict(default='present', choices=['present', 'absent', 'stopped', 'started', 'restarted', 'current']),
       tablet = dict(type='bool', default='no'),
       tdf = dict(type='bool'),
       template = dict(type='bool', default='no'),
@@ -934,6 +953,19 @@ def main():
         time.sleep(1)
     except Exception as e:
       module.fail_json(msg="deletion of VM %s failed with exception: %s" % ( vmid, e ))
+  
+  elif state == 'current':
+    results = {}
+    try:
+      vm = get_vm(proxmox, vmid)
+      if not vm:
+        module.fail_json(msg='VM with vmid = %s not exists in cluster' % vmid)
+      current = getattr(proxmox.nodes(vm[0]['node']), VZ_TYPE)(vmid).status.current.get()['status']
+      results['status'] = current
+      if results:
+         module.exit_json(changed=False, msg="VM %s with vmid = %s is %s" % (name, vmid, current), **results)
+    except Exception as e:
+      module.fail_json(msg="Unable to get vm {} with vmid = {} status: ".format(name, vmid) + str(e))
 
 # import module snippets
 from ansible.module_utils.basic import *
