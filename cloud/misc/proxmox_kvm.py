@@ -58,7 +58,7 @@ options:
   api_password:
     description:
       - Specify the password to authenticate with.
-      - you can use PROXMOX_PASSWORD environment variable
+      - You can use C(PROXMOX_PASSWORD) environment variable.
     default: null
     required: false
   autostart:
