@@ -460,7 +460,7 @@ options:
   vga:
     description:
      - select VGA type. If you want to use high resolution modes (>= 1280x1024x16) then you should use option 'std' or 'vmware'
-    choices: ['std', 'cirrus', 'vmware', 'qxl', 'serial0', 'serial1', 'serial2', 'serial3', 'qxl2', 'qxl3', 'qxl4']
+    choices: ['std', 'cirrus', 'vmware', 'qx', 'serial0', 'serial1', 'serial2', 'serial3', 'qxl2', 'qxl3', 'qxl4']
     required: false
     default: std
   virtio:
@@ -831,7 +831,7 @@ def main():
       timeout = dict(type='int', default=30),
       validate_certs = dict(type='bool', default='no'),
       vcpus = dict(type='int', default=None),
-      vga = dict(default='std', choices=['std', 'cirrus', 'vmware', 'qxl', 'serial0', 'serial1', 'serial2', 'serial3', 'qxl2', 'qxl3', 'qxl4']),
+      vga = dict(default='std', choices=['std', 'cirrus', 'vmware', 'qx', 'serial0', 'serial1', 'serial2', 'serial3', 'qxl2', 'qxl3', 'qxl4']),
       virtio = dict(type='dict', default=None),
       vmid = dict(type='int', default=None),
       watchdog = dict(),
