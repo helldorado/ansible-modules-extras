@@ -486,7 +486,7 @@ options:
     required: false
     default: null
     type: string
-Notes,
+Notes:
   - Requires proxmoxer and requests modules on host. This modules can be installed with pip.
 requirements: [ "proxmoxer", "requests" ]
 '''
