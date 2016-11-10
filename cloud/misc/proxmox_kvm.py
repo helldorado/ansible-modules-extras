@@ -26,6 +26,87 @@ description:
 version_added: "2.3"
 author: "Abdoul Bah (@helldorado) <abdoul.bah at alterway.fr>"
 options:
+  acpi:
+    description:
+      - Specify if ACPI should be enables/disabled.
+    required: false
+    default: "yes"
+    choices: [ "yes", "no" ]
+    type: boolean
+  agent:
+    description:
+      - Specify if the QEMU GuestAgent should be enabled/disabled.
+    required: false
+    default: null
+    choices: [ "yes", "no" ]
+    type: boolean
+  args:
+    description:
+      - Pass arbitrary arguments to kvm.
+      - This option is for experts only!
+    default: "-serial unix:/var/run/qemu-server/VMID.serial,server,nowait"
+    required: false
+    type: string
+  api_host:
+    description:
+      - Specify the target host of the Proxmox VE cluster.
+    required: true
+  api_user:
+    description:
+      - Specify the user to authenticate with.
+    required: true
+  api_password:
+    description:
+      - Specify the password to authenticate with.
+      - You can use C(PROXMOX_PASSWORD) environment variable.
+    default: null
+    required: false
+  autostart:
+    description:
+      - Specify, if the VM should be automatically restarted after crash (currently ignored in PVE API).
+    required: false
+    default: "no"
+    choices: [ "yes", "no" ]
+    type: boolean
+  balloon:
+    description:
+      - Specify the amount of RAM for the VM in MB.
+      - Using zero disables the ballon driver.
+    required: false
+    default: 0
+    type: integer
+  bios:
+    description:
+      - Specify the BIOS implementation.
+    choices: ['seabios', 'ovmf']
+    required: false
+    default: null
+    type: string
+  boot:
+    description:
+      - Specify the boot order -> boot on floppy (a), hard disk (c), CD-ROM (d), or network (n).
+      - You can combine to set order.
+    required: false
+    default: cnd
+    type: string
+  bootdisk:
+    description:
+      - Specify if booting from specified disk is enabled.
+    required: false
+    default: null
+    type: string
+  cores:
+    description:
+      - Specify number of cores per socket.
+    required: false
+    default: 1
+    type: integer
+  cpu:
+    description:
+      - Specify emulated CPU type.
+    required: false
+    default: kvm64
+    type: string
   cpulimit:
     description:
       - Specify if CPU usage will be limited. Value 0 indicates no CPU limit.
@@ -145,7 +226,7 @@ options:
   machine:
     description:
       - Specifies the Qemu machine type.
-      - type => C(pc|pc(-i440fx)?-\d+\.\d+(\.pxe)?|q35|pc-q35-\d+\.\d+(\.pxe)?)
+      - type => C((pc|pc(-i440fx)?-\d+\.\d+(\.pxe)?|q35|pc-q35-\d+\.\d+(\.pxe)?))
     required: false
     default: null
     type: string
@@ -280,9 +361,9 @@ options:
     type: string
   serial:
     description:
-      - A hash/dictionary of serial device to create inside the VM. '{"key":"value", "key":"value"}'.
+      - A hash/dictionary of serial device to create inside the VM. C('{"key":"value", "key":"value"}').
       - Keys allowed are - serial[n](str; required) where 0 ≤ n ≤ 3.
-      - Values allowed are -  C("(/dev/.+|socket)").
+      - Values allowed are - C((/dev/.+|socket)).
       - /!\ If you pass through a host serial device, it is no longer possible to migrate such machines - use with special care.
     default: null
     required: false
@@ -439,7 +520,6 @@ EXAMPLES = '''
     node        : sabrewulf
     net         : '{"net0":"virtio,bridge=vmbr1,rate=200", "net1":"e1000,bridge=vmbr2,"}'
 
-
 # Create new VM with one network interface, three virto hard disk, 4 cores, and 2 vcpus.
 - proxmox_kvm:
     api_user    : root@pam
@@ -554,7 +634,9 @@ vmid:
     type: int
     sample: 115
 status:
-    description: The current virtual machine status.
+    description: 
+      - The current virtual machine status.
+      - Returned only when C(state=current)
     returned: success
     type: dict
     sample: '{
