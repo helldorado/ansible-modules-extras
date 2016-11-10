@@ -145,7 +145,7 @@ options:
     description:
       - allow to force stop VM
       - can be used only with states C(stopped), C(restarted)
-    default:
+    default: null
     choices: [ "yes", "no" ]
     required: false
     type: boolean
