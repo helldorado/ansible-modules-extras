@@ -26,87 +26,6 @@ description:
 version_added: "2.3"
 author: "Abdoul Bah (@helldorado) <abdoul.bah at alterway.fr>"
 options:
-  acpi:
-    description:
-      - Specify if ACPI should be enables/disabled.
-    required: false
-    default: "yes"
-    choices: [ "yes", "no" ]
-    type: boolean
-  agent:
-    description:
-      - Specify if the QEMU GuestAgent should be enabled/disabled.
-    required: false
-    default: null
-    choices: [ "yes", "no" ]
-    type: boolean
-  args:
-    description:
-      - Pass arbitrary arguments to kvm.
-      - Notes, This option is for experts only!
-    default: "-serial unix:/var/run/qemu-server/VMID.serial,server,nowait"
-    required: false
-    type: string
-  api_host:
-    description:
-      - Specify the target host of the Proxmox VE cluster.
-    required: true
-  api_user:
-    description:
-      - Specify the user to authenticate with.
-    required: true
-  api_password:
-    description:
-      - Specify the password to authenticate with.
-      - You can use C(PROXMOX_PASSWORD) environment variable.
-    default: null
-    required: false
-  autostart:
-    description:
-      - Specify, if the VM should be automatically restarted after crash (currently ignored in PVE API).
-    required: false
-    default: "no"
-    choices: [ "yes", "no" ]
-    type: boolean
-  balloon:
-    description:
-      - Specify the amount of RAM for the VM in MB.
-      - Using zero disables the ballon driver.
-    required: false
-    default: 0
-    type: integer
-  bios:
-    description:
-      - Specify the BIOS implementation.
-    choices: ['seabios', 'ovmf']
-    required: false
-    default: null
-    type: string
-  boot:
-    description:
-      - Specify the boot order: boot on floppy (a), hard disk (c), CD-ROM (d), or network (n)
-      - Notes, You can combine to set order.
-    required: false
-    default: cnd
-    type: string
-  bootdisk:
-    description:
-      - Specify if booting from specified disk is enabled.
-    required: false
-    default: null
-    type: string
-  cores:
-    description:
-      - Specify number of cores per socket.
-    required: false
-    default: 1
-    type: integer
-  cpu:
-    description:
-      - Specify emulated CPU type.
-    required: false
-    default: kvm64
-    type: string
   cpulimit:
     description:
       - Specify if CPU usage will be limited. Value 0 indicates no CPU limit.
@@ -117,7 +36,7 @@ options:
   cpuunits:
     description:
       - Specify CPU weight for a VM.
-      - Notes, You can disable fair-scheduler configuration by setting this to 0
+      - You can disable fair-scheduler configuration by setting this to 0
     default: 1000
     required: false
     type: integer
@@ -130,21 +49,21 @@ options:
   description:
     description:
       - Specify the description for the VM. Only used on the configuration web interface.
-      - Notes, this is saved as comment inside the configuration file.
+      - This is saved as comment inside the configuration file.
     required: false
     default: null
     type: string
   digest:
     description:
       - Specify if to prevent changes if current configuration file has different SHA1 digest.
-      - Notes, this can be used to prevent concurrent modifications.
+      - This can be used to prevent concurrent modifications.
     required: false
     default: null
     type: string
   force:
     description:
       - Allow to force stop VM.
-      - Notes, can be used only with states C(stopped), C(restarted).
+      - Can be used only with states C(stopped), C(restarted).
     default: null
     choices: [ "yes", "no" ]
     required: false
@@ -211,7 +130,7 @@ options:
   localtime:
     description:
       - Sets the real time clock to local time.
-      - Notes, This is enabled by default if ostype indicates a Microsoft OS.
+      - This is enabled by default if ostype indicates a Microsoft OS.
     required: false
     default: null
     choices: [ "yes", "no" ]
@@ -245,14 +164,14 @@ options:
   migrate_speed:
     description:
       - Sets maximum speed (in MB/s) for migrations.
-      - Notes, a value of 0 is no limit.
+      - A value of 0 is no limit.
     required: false
     default: null
     type: integer
   name:
     description:
       - Specifies the VM name. Only used on the configuration web interface.
-      - Notes, required only for C(state=present).
+      - Required only for C(state=present).
     default: null
     required: false
   net:
@@ -297,7 +216,7 @@ options:
   ostype:
     description:
       - Specifies guest operating system. This is used to enable special optimization/features for specific operating systems.
-      - Notes, l26 is Linux 2.6/3.X Kernel.
+      - The l26 is Linux 2.6/3.X Kernel.
     choices: ['other', 'wxp', 'w2k', 'w2k3', 'w2k8', 'wvista', 'win7', 'win8', 'l24', 'l26', 'solaris']
     default: l26
     required: false
@@ -348,10 +267,10 @@ options:
       - Values allowed are -  C("storage:size,format=value").
       - C(storage) is the storage identifier where to create the disk.
       - C(size) is the size of the disk in GB.
-      - C(format) is the drive’s backing file’s data format. qcow2|raw|subvol.
+      - C(format) is the drive’s backing file’s data format. C(qcow2|raw|subvol).
     default: null
     required: false
-    type:  A hash/dictionary defining scsi
+    type: A hash/dictionary defining scsi
   scsihw:
     description:
       - Specifies the SCSI controller model.
@@ -379,7 +298,8 @@ options:
     type: integer
   skiplock:
     description:
-      - Ignore locks - only root is allowed to use this option.
+      - Ignore locks
+      - Only root is allowed to use this option.
     required: false
     default: null
     choices: [ "yes", "no" ]
@@ -399,7 +319,7 @@ options:
   startdate:
     description:
       - Sets the initial date of the real time clock.
-      - Valid format for date are 'now' or '2016-09-25T16:01:21' or '2016-09-25'.
+      - Valid format for date are C('now') or C('2016-09-25T16:01:21') or C('2016-09-25').
     required: false
     default: null
     type: string
@@ -413,7 +333,7 @@ options:
     type: string
   state:
     description:
-     - Indicates desired state of the instance.
+      - Indicates desired state of the instance.
     choices: ['present', 'started', 'absent', 'stopped', 'restarted']
     required: false
     default: present
@@ -459,7 +379,7 @@ options:
     type: integer
   vga:
     description:
-     - Select VGA type. If you want to use high resolution modes (>= 1280x1024x16) then you should use option 'std' or 'vmware'.
+      - Select VGA type. If you want to use high resolution modes (>= 1280x1024x16) then you should use option 'std' or 'vmware'.
     choices: ['std', 'cirrus', 'vmware', 'qxl', 'serial0', 'serial1', 'serial2', 'serial3', 'qxl2', 'qxl3', 'qxl4']
     required: false
     default: std
