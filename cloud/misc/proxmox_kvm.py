@@ -1037,6 +1037,7 @@ def main():
       module.fail_json(msg="deletion of VM %s failed with exception: %s" % ( vmid, e ))
   
   elif state == 'current':
+    global results
     results = {}
     try:
       vm = get_vm(proxmox, vmid)
