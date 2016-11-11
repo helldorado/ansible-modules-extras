@@ -1037,15 +1037,15 @@ def main():
       module.fail_json(msg="deletion of VM %s failed with exception: %s" % ( vmid, e ))
   
   elif state == 'current':
-    results = {}
+    status = {}
     try:
       vm = get_vm(proxmox, vmid)
       if not vm:
         module.fail_json(msg='VM with vmid = %s not exists in cluster' % vmid)
       current = getattr(proxmox.nodes(vm[0]['node']), VZ_TYPE)(vmid).status.current.get()['status']
-      results['status'] = current
-      if results:
-         module.exit_json(changed=False, msg="VM %s with vmid = %s is %s" % (name, vmid, current), **results)
+      status['status'] = current
+      if status:
+         module.exit_json(changed=False, msg="VM %s with vmid = %s is %s" % (name, vmid, current), **status)
     except Exception as e:
       module.fail_json(msg="Unable to get vm {} with vmid = {} status: ".format(name, vmid) + str(e))
 
