@@ -903,13 +903,13 @@ def main():
   if state == 'present':
     try:
       if get_vm(proxmox, vmid) and not module.params['force']:
-        module.exit_json(changed=False, msg="VM with vmid <%s> is already exists" % vmid)
+        module.exit_json(changed=False, msg="VM with vmid <%s> already exists" % vmid)
       elif get_vmid(proxmox, name) and not module.params['force']:
-        module.exit_json(changed=False, msg="VM with name <%s> is already exists" % name)
+        module.exit_json(changed=False, msg="VM with name <%s> already exists" % name)
       elif not (node, module.params['name']):
         module.fail_json(msg='node, name is mandatory for creating vm')
       elif not node_check(proxmox, node):
-        module.fail_json(msg="node '%s' not exists in cluster" % node)
+        module.fail_json(msg="node '%s' does not exist in cluster" % node)
 
       create_vm(module, proxmox, vmid, node, name, memory, cpu, cores, sockets, timeout,
                       acpi = module.params['acpi'],
@@ -976,7 +976,7 @@ def main():
     try:
       vm = get_vm(proxmox, vmid)
       if not vm:
-        module.fail_json(msg='VM with vmid <%s> not exists in cluster' % vmid)
+        module.fail_json(msg='VM with vmid <%s> does not exist in cluster' % vmid)
       if getattr(proxmox.nodes(vm[0]['node']), VZ_TYPE)(vmid).status.current.get()['status'] == 'running':
         module.exit_json(changed=False, msg="VM %s is already running" % vmid)
 
@@ -989,10 +989,10 @@ def main():
     try:
       vm = get_vm(proxmox, vmid)
       if not vm:
-        module.fail_json(msg='VM with vmid = %s not exists in cluster' % vmid)
+        module.fail_json(msg='VM with vmid = %s does not exist in cluster' % vmid)
 
       if getattr(proxmox.nodes(vm[0]['node']), VZ_TYPE)(vmid).status.current.get()['status'] == 'stopped':
-        module.exit_json(changed=False, msg="VM %s is already shutdown" % vmid)
+        module.exit_json(changed=False, msg="VM %s already is stopped" % vmid)
 
       if stop_vm(module, proxmox, vm, vmid, timeout, force = module.params['force']):
         module.exit_json(changed=True, msg="VM %s is shutting down" % vmid)
@@ -1003,7 +1003,7 @@ def main():
     try:
       vm = get_vm(proxmox, vmid)
       if not vm:
-        module.fail_json(msg='VM with vmid = %s not exists in cluster' % vmid)
+        module.fail_json(msg='VM with vmid = %s does not exist in cluster' % vmid)
       if getattr(proxmox.nodes(vm[0]['node']), VZ_TYPE)(vmid).status.current.get()['status'] == 'stopped':
         module.exit_json(changed=False, msg="VM %s is not running" % vmid)
 
@@ -1042,7 +1042,7 @@ def main():
     try:
       vm = get_vm(proxmox, vmid)
       if not vm:
-        module.fail_json(msg='VM with vmid = %s not exists in cluster' % vmid)
+        module.fail_json(msg='VM with vmid = %s does not exist in cluster' % vmid)
       current = getattr(proxmox.nodes(vm[0]['node']), VZ_TYPE)(vmid).status.current.get()['status']
       results['status'] = current
       if results:
