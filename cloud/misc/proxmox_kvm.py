@@ -71,7 +71,7 @@ options:
   balloon:
     description:
       - Specify the amount of RAM for the VM in MB.
-      - Using zero disables the ballon driver.
+      - Using zero disables the balloon driver.
     required: false
     default: 0
     type: integer
@@ -84,14 +84,14 @@ options:
     type: string
   boot:
     description:
-      - Specify the boot order -> boot on floppy (a), hard disk (c), CD-ROM (d), or network (n).
+      - Specify the boot order -> boot on floppy C(a), hard disk C(c), CD-ROM C(d), or network C(n).
       - You can combine to set order.
     required: false
     default: cnd
     type: string
   bootdisk:
     description:
-      - Specify if booting from specified disk is enabled.
+      - Enable booting from specified disk. C((ide|sata|scsi|virtio)\d+)
     required: false
     default: null
     type: string
@@ -449,6 +449,7 @@ options:
   validate_certs:
     description:
       - Enables/disables HTTPS certificate verification for API access.
+      - If C(no), SSL certificates will not be validated. This should only be used on personally controlled sites using self-signed certificates.
     default: "no"
     choices: [ "yes", "no" ]
     required: false
@@ -748,15 +749,14 @@ def create_vm(module, proxmox, vmid, node, name, memory, cpu, cores, sockets, ti
   taskid = getattr(proxmox_node, VZ_TYPE).create(vmid=vmid, name=name, memory=memory, cpu=cpu, cores=cores, sockets=sockets, **kwargs)
 
   while timeout:
-      if ( proxmox_node.tasks(taskid).status.get()['status'] == 'stopped'
-          and proxmox_node.tasks(taskid).status.get()['exitstatus'] == 'OK' ):
-        return True
-      timeout = timeout - 1
-      if timeout == 0:
-        module.fail_json(msg='Reached timeout while waiting for creating VM. Last line in task before timeout: %s'
-                         % proxmox_node.tasks(taskid).log.get()[:1])
-
-      time.sleep(1)
+    if ( proxmox_node.tasks(taskid).status.get()['status'] == 'stopped'
+        and proxmox_node.tasks(taskid).status.get()['exitstatus'] == 'OK' ):
+      return True
+    timeout = timeout - 1
+    if timeout == 0:
+      module.fail_json(msg='Reached timeout while waiting for creating VM. Last line in task before timeout: %s'
+                       % proxmox_node.tasks(taskid).log.get()[:1])
+    time.sleep(1)
   return False
 
 def start_vm(module, proxmox, vm, vmid, timeout):
